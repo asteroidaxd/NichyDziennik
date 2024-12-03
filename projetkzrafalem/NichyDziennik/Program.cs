@@ -19,6 +19,13 @@ namespace DziennikOcen
         {
             Oceny.Add(ocena);
         }
+        public decimal ObliczNajwyzszaOcene()
+        {
+            if (Oceny.Count == 0)
+                return 0;
+
+            return Oceny.Max();
+        }
         public decimal ObliczSrednia()
         {
             if (Oceny.Count == 0)
@@ -26,14 +33,24 @@ namespace DziennikOcen
 
             return Oceny.Average();
         }
+        public decimal ObliczNajmniejszaOcene()
+        {
+            if (Oceny.Count == 0)
+                return 0;
+
+            return Oceny.Min();
+        }
+
         public void WyswietlInformacje()
         {
             Console.WriteLine($"Przedmiot: {NazwaPrzedmiotu}");
             Console.WriteLine($"Średnia ocen: {ObliczSrednia():F2}");
+            Console.WriteLine($"Najwyższa ocena: {ObliczNajwyzszaOcene()}");
+            Console.WriteLine($"Najniższa ocena: {ObliczNajmniejszaOcene()}");
         }
     }
 
-    class Program
+        class Program
     {
         static string wybor;
         static bool poprawny = false;
