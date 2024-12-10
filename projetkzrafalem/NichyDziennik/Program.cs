@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace DziennikOcen
+﻿namespace NichyDziennik
 {
+
     public class Przedmiot
     {
         public string NazwaPrzedmiotu { get; set; }
@@ -26,36 +23,37 @@ namespace DziennikOcen
 
             return Oceny.Average();
         }
-        public void WyswietlInformacje()
-        {
-            Console.WriteLine($"Przedmiot: {NazwaPrzedmiotu}");
-            Console.WriteLine($"Średnia ocen: {ObliczSrednia():F2}");
-        }
     }
 
     class Program
     {
+
         static string wybor;
         static bool poprawny = false;
-        static void Main(string[] args)
+        static void Main()
         {
+
             string wybor;
             bool poprawny = false;
             while (true) { wyswietlOceny(); }
 
-
-
         }
 
+        static string przedmiotszkolny;
+        public static List<Przedmiot> listaprzedmiotow = [];
 
         static void wyswietlOceny()
         {
+
             Console.Clear();
             //przykladowe dane
             Console.WriteLine("oceny: ");
-            Console.WriteLine("matematyka(3,8): 4,3,3,3");
-            Console.WriteLine("polski(1,1): 1,1,1,1,2");
-            Console.WriteLine("wf(6,0): 6");
+
+            foreach (var przedmiot in listaprzedmiotow)
+            {
+                Console.WriteLine(przedmiot.NazwaPrzedmiotu);
+                przedmiot.Oceny.ForEach(Console.WriteLine);
+            }
 
             //nawigacja
             Console.WriteLine("\nWpisz \"max\" lub \"min\" aby zobaczyc takie oceny z kazdego przedmiotu");
@@ -106,15 +104,21 @@ namespace DziennikOcen
         {
             Console.WriteLine("Wpisz: przedmiot,ocena");
             Console.WriteLine("przedmioty w dzienniku:");
-            Console.WriteLine("matematyka,polski,wf");
-            Console.ReadLine();
+            foreach (var name in listaprzedmiotow)
+            {
+                Console.WriteLine(name);
+            }
+            przedmiotszkolny = Console.ReadLine();
+            
             zapisz();
         }
         static void usunOcene()
         {
             Console.WriteLine("Wpisz: przedmiot,ocena,numer oceny liczac od 1 od najnowszych do najstarszych");
-            Console.WriteLine("przedmioty w dzienniku:");
-            Console.WriteLine("matematyka,polski,wf");
+            foreach (var name in listaprzedmiotow)
+            {
+                Console.WriteLine(name);
+            }
             Console.ReadLine();
             zapisz();
         }
@@ -122,7 +126,9 @@ namespace DziennikOcen
         static void dodajPrzedmiot()
         {
             Console.WriteLine("wpisz nazwe przedmiotu do dodania:");
-            Console.ReadLine();
+            przedmiotszkolny = Console.ReadLine();
+            Przedmiot newSubject = new Przedmiot(przedmiotszkolny);
+            listaprzedmiotow.Add(newSubject);
             zapisz();
         }
         static void usunPrzedmiot()
@@ -152,9 +158,7 @@ namespace DziennikOcen
         {
             Console.WriteLine("zapisano stan do pliku");
         }
+
     }
 
-
-
-}
 }
