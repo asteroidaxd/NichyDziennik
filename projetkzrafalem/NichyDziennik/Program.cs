@@ -51,8 +51,20 @@
 
             foreach (var przedmiot in listaprzedmiotow)
             {
-                Console.WriteLine(przedmiot.NazwaPrzedmiotu);
-                przedmiot.Oceny.ForEach(Console.WriteLine);
+                Console.Write(przedmiot.NazwaPrzedmiotu);
+                Console.Write(": ");
+                int liczbaocen = przedmiot.Oceny.Count;
+
+                for (int i = 0; i < liczbaocen; i++)
+                {
+                    Console.Write(przedmiot.Oceny[i]);
+                    if (i != liczbaocen - 1)
+                    {
+                        Console.Write(", ");
+                    }
+                }
+
+                Console.Write("\n");
             }
 
             //nawigacja
@@ -106,20 +118,78 @@
             Console.WriteLine("przedmioty w dzienniku:");
             foreach (var name in listaprzedmiotow)
             {
-                Console.WriteLine(name);
+                Console.WriteLine(name.NazwaPrzedmiotu);
             }
-            przedmiotszkolny = Console.ReadLine();
-            
+
+            string input = Console.ReadLine();
+            string[] parts = input.Split(',');
+            if (parts.Length == 2 && decimal.TryParse(parts[1], out decimal ocena))
+            {
+                string subjectName = parts[0].Trim();
+                // Find the subject in the list
+                Przedmiot foundSubject = listaprzedmiotow.FirstOrDefault(p => p.NazwaPrzedmiotu.Equals(subjectName, StringComparison.OrdinalIgnoreCase));
+                if (foundSubject != null)
+                {
+                    foundSubject.DodajOcene(ocena);
+                    Console.WriteLine($"Dodano ocenę {ocena} do przedmiotu {foundSubject.NazwaPrzedmiotu}.");
+                }
+                else
+                {
+                    Console.WriteLine($"Nie znaleziono przedmiotu o nazwie: {subjectName}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Niepoprawny format. Upewnij się, że wpisujesz 'przedmiot,ocena'.");
+            }
+
+
+
             zapisz();
         }
         static void usunOcene()
         {
-            Console.WriteLine("Wpisz: przedmiot,ocena,numer oceny liczac od 1 od najnowszych do najstarszych");
+            Console.WriteLine("Wpisz: przedmiot, numer oceny (licząc od 1 od najnowszych do najstarszych)");
             foreach (var name in listaprzedmiotow)
             {
-                Console.WriteLine(name);
+                Console.WriteLine(name.NazwaPrzedmiotu);
             }
-            Console.ReadLine();
+
+            string input = Console.ReadLine();
+            string[] parts = input.Split(',');
+
+            if (parts.Length == 2 && int.TryParse(parts[1].Trim(), out int index))
+            {
+                string subjectName = parts[0].Trim();
+                // Find the subject in the list
+                Przedmiot foundSubject = listaprzedmiotow.FirstOrDefault(p => p.NazwaPrzedmiotu.Equals(subjectName, StringComparison.OrdinalIgnoreCase));
+
+                if (foundSubject != null)
+                {
+                    // Check if the index is valid (1-based index)
+                    if (index > 0 && index <= foundSubject.Oceny.Count)
+                    {
+                        // Convert to 0-based index
+                        int zeroBasedIndex = foundSubject.Oceny.Count - index;
+                        decimal removedGrade = foundSubject.Oceny[zeroBasedIndex];
+                        foundSubject.Oceny.RemoveAt(zeroBasedIndex);
+                        Console.WriteLine($"Usunięto ocenę {removedGrade} z przedmiotu {foundSubject.NazwaPrzedmiotu}.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Niepoprawny numer oceny. Upewnij się, że podajesz numer w zakresie.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Nie znaleziono przedmiotu o nazwie: {subjectName}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Niepoprawny format. Upewnij się, że wpisujesz 'przedmiot,numer oceny'.");
+            }
+
             zapisz();
         }
 
@@ -130,6 +200,7 @@
             Przedmiot newSubject = new Przedmiot(przedmiotszkolny);
             listaprzedmiotow.Add(newSubject);
             zapisz();
+            
         }
         static void usunPrzedmiot()
         {
