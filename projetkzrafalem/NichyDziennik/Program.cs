@@ -84,9 +84,12 @@
                 else
                 {
                     Console.Clear();
-                    Console.WriteLine("\nWpisz \"max\" lub \"min\" aby zobaczyc oceny");
-                    Console.WriteLine("wpisz \"E\" aby dodac lub usunac ocene lub przedmiot");
+                    //nawigacja
+                    Console.WriteLine("\nWpisz \"max\" lub \"min\" aby zobaczyc takie oceny z kazdego przedmiotu");
+                    Console.WriteLine("wpisz \"e\" aby dodac lub usunac ocene lub przedmiot");
+                    Console.WriteLine("wpisz \"q\" aby wyjsc");
                     wybor = Console.ReadLine();
+                    Console.Clear();
                 }
             }
             poprawny = false;
