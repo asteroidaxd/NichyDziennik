@@ -134,7 +134,8 @@
         static void usunPrzedmiot()
         {
             Console.WriteLine("wpisz nazwe przedmiotu do usuniecia:");
-            Console.ReadLine();
+            przedmiotszkolny = Console.ReadLine();
+            listaprzedmiotow.RemoveAll(p => p.NazwaPrzedmiotu.Equals(przedmiotszkolny, StringComparison.OrdinalIgnoreCase));
             zapisz();
         }
 
